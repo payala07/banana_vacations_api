@@ -1,8 +1,11 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
+from django.utils import timezone
 
 
 class UserProfileManager(BaseUserManager):
@@ -57,7 +60,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class PlannerNotes(models.Model):
+class PlannerNote(models.Model):
     """Database model for the planner notes"""
     notes_text = models.CharField(max_length=255)
     pub_date = models.DateTimeField('date published')
@@ -66,14 +69,22 @@ class PlannerNotes(models.Model):
         """Returns string representation of the planner notes"""
         return self.notes_text
 
+    def was_published_recently(self):
+        """Returns the publication date of the planner notes"""
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
 
 class Diary(models.Model):
     """Database model for the diary entries"""
-    planner_notes = models.ForeignKey(PlannerNotes, on_delete=models.CASCADE)
+    planner_notes = models.ForeignKey(PlannerNote, on_delete=models.CASCADE)
     diary_entry = models.CharField(max_length=255)
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
         """Returns string representation of the diary entry"""
         return self.diary_entry
+
+    def was_published_recently(self):
+        """Returns the publication date of the diary entry"""
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
     
