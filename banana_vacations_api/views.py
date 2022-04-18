@@ -114,8 +114,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 class PlannerNotesApiViewSet(viewsets.ModelViewSet):
-    """Handles the planner notes"""
-
+    """Handle creating and updating planner notes"""
+    serializer_class = serializers.PlannerNotesSerializer
     queryset = models.PlannerNote.objects.all()
 
     def index(request):
@@ -125,8 +125,8 @@ class PlannerNotesApiViewSet(viewsets.ModelViewSet):
         return HttpResponse("You're looking at the notes %s." % notes_id)
 
 class DiaryApiViewSet(viewsets.ModelViewSet):
-    """Handles the diary entries"""
-
+    """Handles creating and updating diary entries"""
+    serializer_class = serializers.DiaryEntrySerializer
     queryset = models.Diary.objects.all()
 
     def index(request):
