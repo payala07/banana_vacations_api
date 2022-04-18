@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -110,3 +111,29 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email')
+
+
+class PlannerNotesApiViewSet(viewsets.ModelViewSet):
+    """Handles the planner notes"""
+
+    queryset = models.PlannerNote.objects.all()
+
+    def index(request):
+        return HttpResponse("Hello, you're at the notes index.")
+
+    def detail(request, notes_id):
+        return HttpResponse("You're looking at the notes %s." % notes_id)
+
+class DiaryApiViewSet(viewsets.ModelViewSet):
+    """Handles the diary entries"""
+
+    queryset = models.Diary.objects.all()
+
+    def index(request):
+        return HttpResponse("Hello, you're at the diary entries index.")
+
+    def detail(request, entry_id):
+        return HttpResponse("You're looking at the entries %s." % entry_id)
+
+    
+
