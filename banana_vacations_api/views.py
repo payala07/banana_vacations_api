@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -119,10 +120,18 @@ class PlannerNotesApiViewSet(viewsets.ModelViewSet):
     queryset = models.PlannerNote.objects.all()
 
     def index(request):
-        return HttpResponse("Hello, you're at the notes index.")
+        """Displays the 3 latest notes in the system"""
+        latest_notes_list = models.PlannerNote.objects.order_by('-pub_date')[:3]
+        output = ', '.join([q.note_text for q in latest_notes_list])
+        return HttpResponse(output)
 
     def detail(request, notes_id):
-        return HttpResponse("You're looking at the notes %s." % notes_id)
+        """Raising a 404 error if a note with the requested id doesn't exist"""
+        try:
+            notes = models.PlannerNote.objects.get(pk=notes_id)
+        except models.PlannerNote.DoesNotExist:
+            raise Http404("PlannerNote does not exist")
+        return render(request, 'api/planner-notes.html', {'notes': notes})
 
 class DiaryApiViewSet(viewsets.ModelViewSet):
     """Handles creating and updating diary entries"""
@@ -133,7 +142,12 @@ class DiaryApiViewSet(viewsets.ModelViewSet):
         return HttpResponse("Hello, you're at the diary entries index.")
 
     def detail(request, entry_id):
-        return HttpResponse("You're looking at the entries %s." % entry_id)
+        """Raising a 404 error  if an entry with the requested id doesn't exist"""
+        try:
+            entries = models.Diary.objects.get(pk=entry_id)
+        except models.Diary.DoesNotExist:
+            raise Http404("Diary does not exist")
+        return render(request, 'api/diary.html', {'entries': entries})
 
     
 
