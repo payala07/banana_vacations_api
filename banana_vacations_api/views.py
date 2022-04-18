@@ -1,5 +1,6 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -148,6 +149,11 @@ class DiaryApiViewSet(viewsets.ModelViewSet):
         except models.Diary.DoesNotExist:
             raise Http404("Diary does not exist")
         return render(request, 'api/diary.html', {'entries': entries})
+
+    def get_queryset(self):
+        """Return the last pulished entry (do not include those set to be published in the future)."""
+        """models.Diary.objects.filter(pub_date_lte=timezone.now()).order_by('-pub_date')[:3] returns a queryset containing Diary entries whose pub_date is less than or equal to - that is, earlier than or equal to -timezone.now"""
+        return models.Diary.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:3]
 
     
 

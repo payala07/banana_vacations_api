@@ -14,5 +14,7 @@ router.register('diary', views.DiaryApiViewSet)
 
 urlpatterns = [
     path('hello-view/', views.HelloApiView.as_view()),
+    path('notes-index',views.PlannerNotesApiViewSet.index, name='notes-index'),
+    path('<int:question_id>/',views.PlannerNotesApiViewSet.detail, name='notes-detail'),
     path('', include(router.urls)),
 ]
