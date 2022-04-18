@@ -71,7 +71,8 @@ class PlannerNote(models.Model):
 
     def was_published_recently(self):
         """Returns the publication date of the planner notes"""
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
 
 class Diary(models.Model):
@@ -85,5 +86,6 @@ class Diary(models.Model):
 
     def was_published_recently(self):
         """Returns the publication date of the diary entry"""
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
     
