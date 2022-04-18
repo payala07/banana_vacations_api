@@ -55,3 +55,15 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of our user"""
         return self.email
+
+
+class PlannerNotes(models.Model):
+    notes_text = models.CharField(max_length=255)
+    pub_date = models.DateTimeField('date published')
+
+
+class Diary(models.Model):
+    planner_notes = models.ForeignKey(PlannerNotes, on_delete=models.CASCADE)
+    diary_entry = models.CharField(max_length=255)
+    pub_date = models.DateTimeField('date published')
+    
