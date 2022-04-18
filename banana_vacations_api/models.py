@@ -44,7 +44,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
-    def gert_full_name(self):
+    def get_full_name(self):
         """Retrieve full name of user"""
         return self.name
 
@@ -58,12 +58,22 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 
 class PlannerNotes(models.Model):
+    """Database model for the planner notes"""
     notes_text = models.CharField(max_length=255)
     pub_date = models.DateTimeField('date published')
 
+    def __str__(self):
+        """Returns string representation of the planner notes"""
+        return self.notes_text
+
 
 class Diary(models.Model):
+    """Database model for the diary entries"""
     planner_notes = models.ForeignKey(PlannerNotes, on_delete=models.CASCADE)
     diary_entry = models.CharField(max_length=255)
     pub_date = models.DateTimeField('date published')
+
+    def __str__(self):
+        """Returns string representation of the diary entry"""
+        return self.diary_entry
     
