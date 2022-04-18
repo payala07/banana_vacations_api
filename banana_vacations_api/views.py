@@ -152,8 +152,8 @@ class DiaryApiViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return the last pulished entry (do not include those set to be published in the future)."""
-        """models.Diary.objects.filter(pub_date_lte=timezone.now()).order_by('-pub_date')[:3] returns a queryset containing Diary entries whose pub_date is less than or equal to - that is, earlier than or equal to -timezone.now"""
-        return models.Diary.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:3]
+        """models.Diary.objects.filter(pub_date_lte=timezone.now()).order_by('-pub_date')[:2] returns a queryset containing Diary entries whose pub_date is less than or equal to - that is, earlier than or equal to -timezone.now"""
+        return models.Diary.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')
 
     
 
