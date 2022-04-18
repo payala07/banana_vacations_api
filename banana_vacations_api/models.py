@@ -76,7 +76,6 @@ class PlannerNote(models.Model):
 
 class Diary(models.Model):
     """Database model for the diary entries"""
-    planner_notes = models.ForeignKey(PlannerNote, on_delete=models.CASCADE)
     diary_entry = models.CharField(max_length=255)
     pub_date = models.DateTimeField('date published')
 
